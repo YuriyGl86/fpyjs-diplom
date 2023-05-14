@@ -4,7 +4,11 @@
  * */
 class ImageViewer {
   constructor( element ) {
-
+    this.imageWrapper = element
+    this.preview = element.querySelector('div.column.six.wide')
+    this.imageContainer = element.querySelector('div.ui.grid').firstElementChild
+    
+    this.registerEvents()
   }
 
   /**
@@ -31,7 +35,12 @@ class ImageViewer {
    * Отрисовывает изображения.
   */
   drawImages(images) {
-
+    console.log(images)
+    console.log(this)
+    images.forEach(image => {
+      const imgHTML = `<div class='four wide column ui medium image-wrapper'><img src=${image} /></div>`
+      this.imageContainer.insertAdjacentHTML('beforeend', imgHTML)
+    })
   }
 
   /**

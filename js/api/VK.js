@@ -6,7 +6,7 @@
  * */
 class VK {
 
-  static ACCESS_TOKEN = '';
+  static ACCESS_TOKEN = localStorage.getItem('token')
   static lastCallback;
 
   /**
@@ -32,6 +32,27 @@ class VK {
       alert(`Ошибка ${result.error.error_code} - ${result.error.error_msg}`)
       return
     }
-    console.log(result)
+    const photos = result.response.items
+    const res = []
+  
+    const sizes = 's, m, x, o, p, q, r, y, z, w'  
+    
+    photos.forEach(photo => {
+      const sizeList = photo.sizes
+      sizeList.sort((a,b) => {
+        return sizes.indexOf(a.type) - sizes.indexOf(b.type)
+      })
+      console.log(sizeList)
+      // console.log(sizeList[1])
+      res.push(sizeList[sizeList.length-1].url)
+
+    });
+    console.log(res)
+    this.lastCallback(res)
+    this.lastCallback = ()=>{}
+
+    
+    
+    // console.log(result.response.items[0].sizes)
   }
 }

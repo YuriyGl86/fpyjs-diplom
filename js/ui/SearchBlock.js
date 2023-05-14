@@ -17,8 +17,8 @@ class SearchBlock {
   registerEvents(){
     
     this.element.querySelector('.button').addEventListener('click', () => {
-            
-      VK.get(this.element.querySelector('input').value, '')
+      const id = this.element.querySelector('input').value.trim()      
+      if(id) VK.get(id, App.imageViewer.drawImages.bind(App.imageViewer))
     })
     
   }

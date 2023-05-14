@@ -4,6 +4,8 @@
  * */
 class SearchBlock {
   constructor( element ) {
+    this.element = element
+    this.registerEvents()
 
   }
 
@@ -13,7 +15,12 @@ class SearchBlock {
    * только клик по кнопке "Заменить" перед отрисовкой очищает все отрисованные ранее изображения
    */
   registerEvents(){
-
+    
+    this.element.querySelector('.button').addEventListener('click', () => {
+            
+      VK.get(this.element.querySelector('input').value, '')
+    })
+    
   }
 
 }

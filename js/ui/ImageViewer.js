@@ -11,6 +11,8 @@ class ImageViewer {
     this.registerEvents()
   }
 
+
+
   /**
    * Добавляет следующие обработчики событий:
    * 1. Клик по изображению меняет класс активности у изображения
@@ -21,33 +23,91 @@ class ImageViewer {
    * 5. Клик по кнопке "Отправить на диск" открывает всплывающее окно для загрузки файлов
    */
   registerEvents(){
-
+    this.imageContainer.addEventListener('dblclick', this.dblclickHandler.bind(this))
+    this.imageContainer.addEventListener('click', this.clickHandler.bind(this))
   }
+
+
+
 
   /**
    * Очищает отрисованные изображения
    */
   clear() {
-
+    // console.log('вызов clear')
+    // console.log(this)
+    this.imageContainer.innerHTML = ''
   }
+
+
+
 
   /**
    * Отрисовывает изображения.
   */
   drawImages(images) {
-    console.log(images)
-    console.log(this)
+    // console.log(images)
+    // console.log(this)
+    if(this.replace){
+      this.clear()
+      this.replace = false      
+    }
     images.forEach(image => {
       const imgHTML = `<div class='four wide column ui medium image-wrapper'><img src=${image} /></div>`
       this.imageContainer.insertAdjacentHTML('beforeend', imgHTML)
     })
+    this.checkButtonText()
   }
+
+
+
 
   /**
    * Контроллирует кнопки выделения всех изображений и отправки изображений на диск
    */
   checkButtonText(){
+    console.log('проверка кнопок', this)
 
+    const imgs = Array.from(this.imageContainer.querySelectorAll('img'))
+    const selectButton = this.imageWrapper.querySelector('button.select-all')
+    const sendButton = this.imageWrapper.querySelector('button.send')
+
+    const selectedImg = imgs.filter(img => img.classList.contains('selected'))
+    if (selectedImg.length == imgs.length) selectButton.innerText = 'Снять выделение'
+    else selectButton.innerText = 'Выбрать всё'
+
+    if (selectedImg.length > 0) sendButton.classList.remove('disabled')
+    else sendButton.classList.add('disabled')
+
+    if (imgs.length > 0) selectButton.classList.remove('disabled')
+    else selectButton.classList.add('disabled')
+
+
+  }
+
+
+  /**
+   * Обработчик события двойного клика
+   */
+  dblclickHandler(event){
+    const target = event.target
+    if(target.tagName === 'IMG'){
+      console.log('двойной клик')
+      this.preview.querySelector('img').src = target.src
+    }
+  }
+
+
+  /**
+   * Обработчик события одинарного клика
+   */
+  clickHandler(event){
+    const target = event.target
+    if(target.tagName === 'IMG'){
+      console.log('один клик')
+      target.classList.toggle('selected')
+      this.checkButtonText()
+    }
   }
 
 }

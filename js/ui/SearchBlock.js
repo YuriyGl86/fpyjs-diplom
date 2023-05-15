@@ -15,11 +15,15 @@ class SearchBlock {
    * только клик по кнопке "Заменить" перед отрисовкой очищает все отрисованные ранее изображения
    */
   registerEvents(){
-    
-    this.element.querySelector('.button').addEventListener('click', () => {
-      const id = this.element.querySelector('input').value.trim()      
-      if(id) VK.get(id, App.imageViewer.drawImages.bind(App.imageViewer))
+    const buttons = Array.from(this.element.querySelectorAll('.button'))
+    buttons.forEach(button =>{
+      button.addEventListener('click', (event) => {
+        const id = this.element.querySelector('input').value.trim()
+        if(event.target.classList.contains('replace')) {App.imageViewer.replace = true}      
+        if(id) VK.get(id, App.imageViewer.drawImages.bind(App.imageViewer))
     })
+    })
+    
     
   }
 

@@ -42,12 +42,12 @@ class VK {
       sizeList.sort((a,b) => {
         return sizes.indexOf(a.type) - sizes.indexOf(b.type)
       })
-      console.log(sizeList)
+      // console.log(sizeList)
       // console.log(sizeList[1])
       res.push(sizeList[sizeList.length-1].url)
 
     });
-    console.log(res)
+    // console.log(res)
     this.lastCallback(res)
     this.lastCallback = ()=>{}
 

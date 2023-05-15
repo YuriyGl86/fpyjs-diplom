@@ -10,7 +10,12 @@ class Yandex {
    * Метод формирования и сохранения токена для Yandex API
    */
   static getToken(){
-
+    const token = localStorage.getItem('yandex')
+    if(!token){
+      token = prompt('введите яндекс-токен')
+      localStorage.setItem('yandex', token)
+    }
+    return token
   }
 
   /**

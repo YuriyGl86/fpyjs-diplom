@@ -25,6 +25,8 @@ class ImageViewer {
   registerEvents(){
     this.imageContainer.addEventListener('dblclick', this.dblclickHandler.bind(this))
     this.imageContainer.addEventListener('click', this.clickHandler.bind(this))
+    this.imageWrapper.querySelector('button.select-all').addEventListener('click', this.selectHandler.bind(this))
+    this.imageWrapper.querySelector('button.show-uploaded-files').addEventListener('click', this.showUplodedHandler.bind(this))
   }
 
 
@@ -108,6 +110,23 @@ class ImageViewer {
       target.classList.toggle('selected')
       this.checkButtonText()
     }
+  }
+
+  selectHandler(event){
+    const imgs = Array.from(this.imageContainer.querySelectorAll('img'))
+    const selectedImg = imgs.filter(img => img.classList.contains('selected'))
+    if (selectedImg.length == imgs.length) {
+      imgs.forEach(img => img.classList.remove('selected'))
+      this.checkButtonText()
+    } else {
+      imgs.forEach(img => img.classList.add('selected'))
+      this.checkButtonText()
+    }
+  }
+
+  showUplodedHandler(){
+    const modal = App.getModal('filePreviewer')
+    modal.modal('show')
   }
 
 }

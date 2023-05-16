@@ -68,7 +68,7 @@ class ImageViewer {
    * Контроллирует кнопки выделения всех изображений и отправки изображений на диск
    */
   checkButtonText(){
-    console.log('проверка кнопок', this)
+    // console.log('проверка кнопок', this)
 
     const imgs = Array.from(this.imageContainer.querySelectorAll('img'))
     const selectButton = this.imageWrapper.querySelector('button.select-all')
@@ -94,7 +94,7 @@ class ImageViewer {
   dblclickHandler(event){
     const target = event.target
     if(target.tagName === 'IMG'){
-      console.log('двойной клик')
+      // console.log('двойной клик')
       this.preview.querySelector('img').src = target.src
     }
   }
@@ -106,7 +106,7 @@ class ImageViewer {
   clickHandler(event){
     const target = event.target
     if(target.tagName === 'IMG'){
-      console.log('один клик')
+      // console.log('один клик')
       target.classList.toggle('selected')
       this.checkButtonText()
     }
@@ -125,7 +125,7 @@ class ImageViewer {
   }
 
   sendHandler(){
-    console.log('загрузчик')
+    // console.log('загрузчик')
     const modal = App.getModal('fileUploader')
     modal.open()
     const selectedImgs = Array.from(this.imageContainer.querySelectorAll('img.selected'))

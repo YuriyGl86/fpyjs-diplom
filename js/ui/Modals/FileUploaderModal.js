@@ -8,7 +8,7 @@ class FileUploaderModal extends BaseModal {
     this.registerEvents()
     this.content = this.modalDOM.querySelector('.content')
     this.images = this.content.getElementsByClassName('image-preview-container')
-    console.log(this.content)
+    // console.log(this.content)
   }
 
 
@@ -26,7 +26,7 @@ class FileUploaderModal extends BaseModal {
     this.modalDOM.querySelector('i.x.icon').addEventListener('click', this.close.bind(this))
     this.modalDOM.querySelector('.close').addEventListener('click', this.close.bind(this))
     this.modalDOM.querySelector('.send-all').addEventListener('click', this.sendAllImages.bind(this))
-    console.log(this.content)
+    // console.log(this.content)
     this.modalDOM.querySelector('.content').addEventListener('click', this.imgContainerHandler.bind(this))
     
   }
@@ -43,9 +43,9 @@ class FileUploaderModal extends BaseModal {
       HTMLList.push(this.getImageHTML(img))
     })
     const imagesHTML = HTMLList.join()
-    console.log(this.content)
+    // console.log(this.content)
     this.content.insertAdjacentHTML('beforeend', imagesHTML)
-    console.log(this.images.length, this.images)
+    // console.log(this.images.length, this.images)
   }
 
 
@@ -94,7 +94,7 @@ class FileUploaderModal extends BaseModal {
   sendImage(imageContainer) {
     console.log('отправка: ', imageContainer )
     const path = imageContainer.querySelector('input').value.trim()
-    if(!trim){
+    if(!path){
       imageContainer.querySelector('div.ui.action.input').classList.add('error')
       return
     }

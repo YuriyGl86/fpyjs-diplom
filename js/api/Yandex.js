@@ -21,8 +21,26 @@ class Yandex {
   /**
    * Метод загрузки файла в облако
    */
-  static uploadFile(path, url, callback){
-    createRequest({
+  static uploadFile(path, url_img, callback){
+    createRequest({url: 'https://cloud-api.yandex.net/v1/disk/resources/upload',
+                  data: {
+                    path: path,
+                    overwrite: true,
+                  },
+                  method: 'GET',
+                  headers: {
+                    Authorization: this.getToken()
+                  },
+                  
+                  callback: (response) => createRequest({
+                    img: url_img,
+                    url: response.href,
+                    method: 'PUT',
+                    callback: callback,
+                    headers: {
+                      Authorization: this.getToken()
+                    },
+                  }),
       
     })
   }

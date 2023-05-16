@@ -22,7 +22,9 @@ class Yandex {
    * Метод загрузки файла в облако
    */
   static uploadFile(path, url, callback){
-
+    createRequest({
+      
+    })
   }
 
   /**

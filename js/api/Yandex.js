@@ -10,7 +10,7 @@ class Yandex {
    * Метод формирования и сохранения токена для Yandex API
    */
   static getToken(){
-    const token = localStorage.getItem('yandex')
+    let token = localStorage.getItem('yandex')
     if(!token){
       token = prompt('введите яндекс-токен')
       localStorage.setItem('yandex', token)
@@ -22,26 +22,28 @@ class Yandex {
    * Метод загрузки файла в облако
    */
   static uploadFile(path, url_img, callback){
-    createRequest({url: 'https://cloud-api.yandex.net/v1/disk/resources/upload',
-                  data: {
-                    path: path,
-                    overwrite: true,
-                  },
-                  method: 'GET',
-                  headers: {
-                    Authorization: this.getToken()
-                  },
-                  
-                  callback: (response) => createRequest({
-                    img: url_img,
-                    url: response.href,
-                    method: 'PUT',
-                    callback: callback,
+    fetch(url_img)
+    .then(response => response.blob())
+    .then(responseimg => {
+      console.log(responseimg)
+      createRequest({url: 'https://cloud-api.yandex.net/v1/disk/resources/upload',
+                    data: {
+                      path: path,
+                      overwrite: true,
+                    },
+                    method: 'GET',
                     headers: {
                       Authorization: this.getToken()
                     },
-                  }),
-      
+                    
+                    callback: (response) => createRequest({
+                      'img': responseimg,
+                      url: response.href,
+                      method: 'PUT',
+                      callback: callback,
+                    }),
+        
+      })
     })
   }
 

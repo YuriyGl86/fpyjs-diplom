@@ -100,7 +100,8 @@ class FileUploaderModal extends BaseModal {
     }
     imageContainer.querySelector('div.ui.action.input').classList.add('disabled')
     const URL = imageContainer.querySelector('img').src
-    Yandex.uploadFile(path, URL, '')
+    console.log(URL)
+    Yandex.uploadFile(path, URL, () =>{})
 
   }
 

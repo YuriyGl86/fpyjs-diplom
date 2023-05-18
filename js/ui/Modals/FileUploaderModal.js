@@ -94,14 +94,14 @@ class FileUploaderModal extends BaseModal {
   sendImage(imageContainer) {
     console.log('отправка: ', imageContainer )
     const path = imageContainer.querySelector('input').value.trim()
-    if(!path){
+    if(!path || path === '/'){
       imageContainer.querySelector('div.ui.action.input').classList.add('error')
       return
     }
     imageContainer.querySelector('div.ui.action.input').classList.add('disabled')
     const URL = imageContainer.querySelector('img').src
     console.log(URL)
-    Yandex.uploadFile(path, URL, () =>{})
+    Yandex.uploadFilePath(path, URL, () =>{})
 
   }
 

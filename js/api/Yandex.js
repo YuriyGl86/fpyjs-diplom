@@ -22,10 +22,15 @@ class Yandex {
    * Метод загрузки файла в облако
    */
   static uploadFile(path, url_img, callback){
+    // if (path.includes('/')){
+    //   console.log(this)    
+    //   this.createPath(path)
+    // }
+    
     fetch(url_img)
     .then(response => response.blob())
-    .then(responseimg => {
-      console.log(responseimg)
+    .then(imgBlob => {
+      console.log(imgBlob)
       createRequest({url: 'https://cloud-api.yandex.net/v1/disk/resources/upload',
                     data: {
                       path: path,
@@ -37,7 +42,7 @@ class Yandex {
                     },
                     
                     callback: (response) => createRequest({
-                      'img': responseimg,
+                      'img': imgBlob,
                       url: response.href,
                       method: 'PUT',
                       callback: callback,
@@ -46,6 +51,19 @@ class Yandex {
       })
     })
   }
+
+   static async uploadFilePath(path, url_img, callback){
+    if (!path.includes('/')){
+      this.uploadFile(path, url_img, callback)    
+    }
+    else {
+      await this.createPath(path).then(this.uploadFile(path, url_img, callback))
+
+
+    }
+  }
+
+
 
   /**
    * Метод удаления файла из облака
@@ -67,4 +85,34 @@ class Yandex {
   static downloadFileByUrl(url){
 
   }
+
+  static createFolder(path, callback){
+    const URL = this.HOST + '/resources'
+    createRequest({
+      method: 'PUT',
+      url: URL,
+      headers: {
+        Authorization: this.getToken()
+      },
+      data: {
+        path: path,        
+      },
+      callback: callback
+    })
+  }
+
+  static async createPath(path){
+    const path1 = path.split('/')
+    const folders = path1.slice(0, path1.length-1)
+    console.log(folders)
+    let currentPath = ''
+    folders.forEach(folder => {
+      currentPath = currentPath + '/' + folder
+      this.createFolder(currentPath, (response) => {console.log('создана папка по пути:' + path)})
+      
+    })
+
+  }
+
+
 }

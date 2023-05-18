@@ -101,17 +101,23 @@ class FileUploaderModal extends BaseModal {
     imageContainer.querySelector('div.ui.action.input').classList.add('disabled')
     const URL = imageContainer.querySelector('img').src
     console.log(URL)
-    Yandex.uploadFilePath(path, URL, () =>{})
+    Yandex.uploadFilePath(path, URL, () =>{
+      imageContainer.remove()
+      if(this.images.length == 0) {
+        App.getModal('fileUploader').close()
+      }
+    })
 
   }
 
 
 
   imgContainerHandler(event){
+    let button = event.target.closest('button')
     if (event.target.tagName == 'INPUT') {
       event.target.closest('.input').classList.remove('error')
     }
-    if (event.target.closest('button').matches('button.ui.button')){
+    if (button && button.matches('button.ui.button')){
       this.sendImage(event.target.closest('.image-preview-container'))
     }
   }

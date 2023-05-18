@@ -27,6 +27,7 @@ class ImageViewer {
     this.imageContainer.addEventListener('click', this.clickHandler.bind(this))
     this.imageWrapper.querySelector('button.select-all').addEventListener('click', this.selectHandler.bind(this))
     this.imageWrapper.querySelector('button.send').addEventListener('click', this.sendHandler.bind(this))
+    this.imageWrapper.querySelector('button.show-uploaded-files').addEventListener('click', this.showuploadedHandler.bind(this))
   }
 
 
@@ -131,6 +132,11 @@ class ImageViewer {
     const selectedImgs = Array.from(this.imageContainer.querySelectorAll('img.selected'))
     modal.showImages(selectedImgs)
 
+  }
+
+  showuploadedHandler(){
+    const modal = App.getModal('filePreviewer')
+    modal.open()
   }
 
 }

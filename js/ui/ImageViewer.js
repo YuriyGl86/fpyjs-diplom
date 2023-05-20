@@ -137,6 +137,8 @@ class ImageViewer {
   showuploadedHandler(){
     const modal = App.getModal('filePreviewer')
     modal.open()
+    modal.modalDOM.querySelector('i.asterisk.loading.icon.massive').style.display = 'block'
+    Yandex.getUploadedFiles(modal.showImages)
   }
 
 }

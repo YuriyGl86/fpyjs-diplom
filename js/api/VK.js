@@ -9,6 +9,18 @@ class VK {
   static ACCESS_TOKEN = localStorage.getItem('token')
   static lastCallback;
 
+
+  static getToken(){
+    let token = localStorage.getItem('token')
+    if(!token){
+      token = prompt('введите VK-токен')
+      localStorage.setItem('token', token)
+    }
+    return token
+  }
+
+
+
   /**
    * Получает изображения
    * */
@@ -16,7 +28,7 @@ class VK {
     this.lastCallback = callback
     const script = document.createElement('SCRIPT');
     script.id = 'request'
-    script.src = `https://api.vk.com/method/photos.get?owner_id=${id}&album_id=profile&photo_sizes=1&access_token=${this.ACCESS_TOKEN}&v=5.131&callback=VK.processData`;
+    script.src = `https://api.vk.com/method/photos.get?owner_id=${id}&album_id=profile&photo_sizes=1&access_token=${this.getToken()}&v=5.131&callback=VK.processData`;
     document.getElementsByTagName("head")[0].appendChild(script);
   
   }

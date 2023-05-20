@@ -21,12 +21,7 @@ class Yandex {
   /**
    * Метод загрузки файла в облако
    */
-  static uploadFile(path, url_img, callback){
-    // if (path.includes('/')){
-    //   console.log(this)    
-    //   this.createPath(path)
-    // }
-    
+  static uploadFile(path, url_img, callback){   
     fetch(url_img)
     .then(response => response.blob())
     .then(imgBlob => {
@@ -52,15 +47,42 @@ class Yandex {
     })
   }
 
-   static async uploadFilePath(path, url_img, callback){
-    if (!path.includes('/')){
-      this.uploadFile(path, url_img, callback)    
+   static uploadFilePath(img_path, url_img, callback){
+    if (!img_path.includes('/')){
+      this.uploadFile(img_path, url_img, callback)    
     }
     else {
-      await this.createPath(path).then(this.uploadFile(path, url_img, callback))
-
+      const foldersList = img_path.split('/')
+      console.log(foldersList.slice(0, foldersList.length-1))
+      this.createFolders(foldersList.slice(0, foldersList.length-1), '', img_path, url_img, callback)
 
     }
+  }
+
+
+
+  static createFolders(folderList, folder_path='', img_path, url_img, callback ){
+    let folders = folderList
+    let currentPath = folder_path
+    
+    createRequest({
+      method: 'PUT',
+      url: this.HOST + '/resources',
+      headers: {
+        Authorization: this.getToken()
+      },
+      data: {
+        path: currentPath + '/' + folders[0],        
+      },
+      callback: () => {
+        if(folders.length == 1){
+          this.uploadFile(img_path, url_img, callback)
+          return
+        }
+        currentPath = currentPath + '/' + folders.shift()
+        this.createFolders(folders, currentPath, img_path, url_img, callback)
+      }
+    })
   }
 
 
@@ -69,48 +91,55 @@ class Yandex {
    * Метод удаления файла из облака
    */
   static removeFile(path, callback){
+    const URL = this.HOST + '/resources'
+    createRequest({
+      method: 'DELETE',
+      url: URL,
+      headers: {
+        Authorization: this.getToken()
+      },
+      callback: callback,
+      data: {
+        path: path,       
+      },
+    })
 
   }
+
+
+
+
 
   /**
    * Метод получения всех загруженных файлов в облаке
    */
   static getUploadedFiles(callback){
-
+    const URL = this.HOST + '/resources/last-uploaded'
+    createRequest({
+      method: 'GET',
+      url: URL,
+      headers: {
+        Authorization: this.getToken()
+      },
+      callback: callback,
+      data: {
+        media_type: 'image',
+        fields: 'name, created, size, path, preview'        
+      },
+    })
   }
+
+
+
+
 
   /**
    * Метод скачивания файлов
    */
   static downloadFileByUrl(url){
-
-  }
-
-  static createFolder(path, callback){
-    const URL = this.HOST + '/resources'
-    createRequest({
-      method: 'PUT',
-      url: URL,
-      headers: {
-        Authorization: this.getToken()
-      },
-      data: {
-        path: path,        
-      },
-      callback: callback
-    })
-  }
-
-  static async createPath(path){
-    const path1 = path.split('/')
-    const folders = path1.slice(0, path1.length-1)
-    console.log(folders)
-    let currentPath = ''
-    folders.forEach(folder => {
-      currentPath = currentPath + '/' + folder
-      this.createFolder(currentPath, (response) => {console.log('создана папка по пути:' + path)})
-      
-    })
+    const a = document.createElement('a')
+    a.href = url
+    a.click()
 
   }
 
